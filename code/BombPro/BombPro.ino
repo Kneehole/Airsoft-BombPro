@@ -1,7 +1,7 @@
 #include <Wire.h> 
 #include <Keypad.h>
-//#include <LiquidCrystal_I2C.h>
-#include <LiquidCrystal.h>
+#include <LiquidCrystal_I2C.h>
+//#include <LiquidCrystal.h>
 /*
  Arduino Bomb Pro
  
@@ -15,8 +15,14 @@
  
  */
 
-//LiquidCrystal_I2C lcd(0x38,16,2);
-LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
+/*
+Configure your liquidCrystal properly.
+If you use a i2c lcd remember to check the device address,
+To do this you can use the i2c_scanner sketch.
+*/
+
+LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
+//LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 const byte ROWS = 4; //four rows
 const byte COLS = 4; //three columns
 char keys[ROWS][COLS] = {
@@ -102,7 +108,9 @@ unsigned long iZoneTime;//initial time for zone
 byte team=0; // 0 = neutral, 1 = green team, 2 = red team
 
 void setup(){
-  lcd.begin(16, 2);
+  lcd.begin(16, 2); // i2c
+  //lcd.begin(16, 2); // serial
+  
   Serial.begin(9600);
   //  lcd.init();                      // initialize the lcd 
   //  lcd.backlight();
