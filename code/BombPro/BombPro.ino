@@ -15,6 +15,10 @@
  
  */
 
+ char splashTitle[]="Comando G9";// you can add your team name or someting cool
+ char splashSubTitle[]=" AIRSOFT SYSTEM";
+  
+
 /*
 Configure your liquidCrystal properly.
 If you use a i2c lcd remember to check the device address,
@@ -108,7 +112,7 @@ unsigned long iZoneTime;//initial time for zone
 byte team=0; // 0 = neutral, 1 = green team, 2 = red team
 
 void setup(){
-  lcd.begin(16, 2); // i2c
+  lcd.begin(20, 4); // i2c
   //lcd.begin(16, 2); // serial
   
   Serial.begin(9600);
@@ -116,9 +120,10 @@ void setup(){
   //  lcd.backlight();
   lcd.setCursor(3,0);
   tone(tonepin,2400,30);
-  lcd.print("IGNIS ONE");// you can add your team name or someting cool
+  lcd.print(splashTitle);// you can add your team name or someting cool
+  delay(1000);
   lcd.setCursor(0,1);
-  lcd.print(" AIRSOFT SYSTEM");// you can add your team name or someting cool
+  lcd.print(splashSubTitle);// you can add your team name or someting cool
   keypad.setHoldTime(50);
   keypad.setDebounceTime(50);
   keypad.addEventListener(keypadEvent);
