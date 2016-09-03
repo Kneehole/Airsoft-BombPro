@@ -51,7 +51,9 @@ void drawPorcent(byte porcent){
 }
 void cls(){
   lcd.clear();
-  lcd.setCursor(0,0);
+  delay(100);
+  lcd.setCursor(1,0);
+  delay(100);
 }
 
 void printTime(unsigned long minutos, unsigned long aTiempo){
@@ -163,7 +165,6 @@ void startGameCount(){
 }
 
 void checkArrows(byte i,byte maxx ){
-
   if(i==0){
     lcd.setCursor(15,1);
     lcd.write(6); 
