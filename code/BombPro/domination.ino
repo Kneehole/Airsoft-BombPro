@@ -79,14 +79,14 @@ void domination(){
     }
 
     //Check If IS neutral
-    while((defuseando || cancelando) && team != TEAM_NEUTRAL)
+    while((isRedBtnPressed() || isGreenBtnPressed()) && team != TEAM_NEUTRAL)
     {
       cls();
       if(team != TEAM_NEUTRAL)lcd.print("NEUTRALIZING...");
       lcd.setCursor(0,1);
       unsigned int percent=0;
       unsigned long xTime=millis(); //start disabling time
-      while(defuseando || cancelando)
+      while(isRedBtnPressed() || isGreenBtnPressed())
       {
         //check if game time runs out during the disabling
         aTime= millis()- iTime;
@@ -133,14 +133,14 @@ void domination(){
 
     //Capturing red
 
-    while(defuseando && team == TEAM_NEUTRAL )
+    while(isRedBtnPressed() && team == TEAM_NEUTRAL )
     {
       cls();
       if(team==TEAM_NEUTRAL)lcd.print(" CAPTURING ZONE");
       lcd.setCursor(0,1);
       unsigned int percent=0;
       unsigned long xTime=millis(); //start disabling time
-      while(defuseando)
+      while(isRedBtnPressed())
       {
         keypad.getKey();
         //check if game time runs out during the disabling
@@ -179,14 +179,14 @@ void domination(){
     }
 
     //getting to green zone
-    while(cancelando && team == TEAM_NEUTRAL )
+    while(isGreenBtnPressed() && team == TEAM_NEUTRAL )
     {
       cls();
       if(team==TEAM_NEUTRAL)lcd.print(" CAPTURING ZONE");
       lcd.setCursor(0,1);
       unsigned int percent=0;
       unsigned long xTime=millis(); //start disabling time
-      while(cancelando)
+      while(isGreenBtnPressed())
       {
         keypad.getKey();
         //check if game time runs out during the disabling
@@ -301,5 +301,13 @@ void gameOver(){
       break;
     }  
   } 
+}
+
+boolean isGreenBtnPressed() {
+  return defuseando; // tecla d
+}
+
+boolean isRedBtnPressed() {
+  return cancelando; // tecla c
 }
 
