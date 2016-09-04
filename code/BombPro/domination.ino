@@ -14,7 +14,7 @@ void domination(){
   greenTime=0;
 
   int largoTono = 50;
-  // 0 = neutral, 1 = green team, 2 = red team
+ 
   a=millis();
   //Starting Game Code
   while(1)  // this is the important code, is a little messy but works good.
@@ -29,13 +29,13 @@ void domination(){
     timeCalcVar=(millis()- iTime)%1000;
     if(timeCalcVar >= 0 && timeCalcVar <= 40)
     {
-      if(team==1)digitalWrite(GREENLED, HIGH);  
-      if(team==2)digitalWrite(REDLED, HIGH);  
+      if(team==TEAM_GREEN)digitalWrite(GREENLED, HIGH);  
+      if(team==TEAM_RED)digitalWrite(REDLED, HIGH);  
     }
     if(timeCalcVar >= 50 && timeCalcVar <= 100)
     {    
-      if(team==1)digitalWrite(GREENLED, LOW);  
-      if(team==2)digitalWrite(REDLED, LOW);
+      if(team==TEAM_GREEN)digitalWrite(GREENLED, LOW);  
+      if(team==TEAM_RED)digitalWrite(REDLED, LOW);
     }
     // Sound!!! same as Destroy 
     if(timeCalcVar >= 0 && timeCalcVar <= 40 && soundEnable)tone(tonepin,tonoActivada,largoTono);
@@ -60,11 +60,11 @@ void domination(){
     else if (!showGameTime){
 
       lcd.setCursor(2,0);
-      if(team == 0)lcd.print("NEUTRAL ZONE");
-      if(team == 1)lcd.print(" GREEN ZONE");
-      if(team == 2)lcd.print("  RED ZONE");
+      if(team == TEAM_NEUTRAL)lcd.print("NEUTRAL ZONE");
+      if(team == TEAM_GREEN)lcd.print(" GREEN ZONE");
+      if(team == TEAM_RED)lcd.print("  RED ZONE");
 
-      if(team>0){
+      if(team != TEAM_NEUTRAL){
         lcd.setCursor(3,1);
         printTimeDom(millis()-iZoneTime,true);
       }
@@ -79,10 +79,10 @@ void domination(){
     }
 
     //Check If IS neutral
-    while((defuseando || cancelando) && team > 0)
+    while((defuseando || cancelando) && team != TEAM_NEUTRAL)
     {
       cls();
-      if(team>0)lcd.print("NEUTRALIZING...");
+      if(team != TEAM_NEUTRAL)lcd.print("NEUTRALIZING...");
       lcd.setCursor(0,1);
       unsigned int percent=0;
       unsigned long xTime=millis(); //start disabling time
@@ -115,16 +115,16 @@ void domination(){
         {
           delay(1000);
 
-          if(team==1){ 
+          if(team==TEAM_GREEN){ 
             greenTime+=millis()-iZoneTime;
             iZoneTime=0; 
 
           }
-          if(team==2){ 
+          if(team==TEAM_RED){ 
             redTime+=millis()-iZoneTime;
             iZoneTime=0; 
           }
-          team=0;
+          team=TEAM_NEUTRAL;
           break;
         }
       }
@@ -133,10 +133,10 @@ void domination(){
 
     //Capturing red
 
-    while(defuseando && team == 0 )
+    while(defuseando && team == TEAM_NEUTRAL )
     {
       cls();
-      if(team==0)lcd.print(" CAPTURING ZONE");
+      if(team==TEAM_NEUTRAL)lcd.print(" CAPTURING ZONE");
       lcd.setCursor(0,1);
       unsigned int percent=0;
       unsigned long xTime=millis(); //start disabling time
@@ -168,7 +168,7 @@ void domination(){
         if(percent >= 100)
         {
           digitalWrite(GREENLED, LOW);
-          team=2;
+          team=TEAM_RED;
           iZoneTime=millis();
           delay(1000);
           break;
@@ -179,10 +179,10 @@ void domination(){
     }
 
     //getting to green zone
-    while(cancelando && team == 0 )
+    while(cancelando && team == TEAM_NEUTRAL )
     {
       cls();
-      if(team==0)lcd.print(" CAPTURING ZONE");
+      if(team==TEAM_NEUTRAL)lcd.print(" CAPTURING ZONE");
       lcd.setCursor(0,1);
       unsigned int percent=0;
       unsigned long xTime=millis(); //start disabling time
@@ -214,7 +214,7 @@ void domination(){
         if(percent >= 100)
         {
           digitalWrite(GREENLED, LOW);
-          team=1;
+          team=TEAM_GREEN;
           iZoneTime=millis();
           delay(1000);
           break;
@@ -228,8 +228,8 @@ void domination(){
 
 void gameOver(){
 
-  if(team==1)greenTime+=millis()-iZoneTime;
-  if(team==2)redTime+=millis()-iZoneTime;
+  if(team==TEAM_GREEN)greenTime+=millis()-iZoneTime;
+  if(team==TEAM_RED)redTime+=millis()-iZoneTime;
   digitalWrite(GREENLED, LOW);
   digitalWrite(REDLED, LOW);
   while(!defuseando){

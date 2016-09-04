@@ -109,7 +109,12 @@ unsigned long timeCalcVar;
 unsigned long redTime;
 unsigned long greenTime;
 unsigned long iZoneTime;//initial time for zone
-byte team=0; // 0 = neutral, 1 = green team, 2 = red team
+
+// Domination
+int team=0; // 0 = neutral, 1 = green team, 2 = red team
+int TEAM_NEUTRAL = 0;
+int TEAM_GREEN = 1; // cancelando -> green Team button
+int TEAM_RED = 2;  // defuseando -> red Team button
 
 void setup(){
   lcd.begin(20, 4); // i2c
